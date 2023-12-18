@@ -26,8 +26,10 @@ const handler = NextAuth({
         await connectToDatabase();
         //check if a user already exists
         const userExists = await User.findOne({
-          vkID: profile.response[0].id,
+          vkId: profile.response[0].id,
         });
+        console.log(userExists);
+
         //if not, create a user
         if (!userExists) {
           await User.create({
