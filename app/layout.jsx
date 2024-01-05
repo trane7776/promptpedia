@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 import Nav from '@/components/Nav';
 import Provider from '@/components/Provider';
+import { SearchProvider } from '@/context/SearchContext';
 export const metadata = {
   title: 'Поделись промптом',
   description:
@@ -16,8 +17,10 @@ const RootLayout = ({ children }) => {
             <div className="gradient" />
           </div>
           <main className="app">
-            <Nav />
-            {children}
+            <SearchProvider>
+              <Nav />
+              {children}
+            </SearchProvider>
           </main>
         </Provider>
       </body>

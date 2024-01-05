@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import PromptCard from "./PromptCard";
+import { useState, useEffect, useContext } from 'react';
+import PromptCard from './PromptCard';
+import { useSearch } from '../context/SearchContext';
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
@@ -18,16 +19,38 @@ const PromptCardList = ({ data, handleTagClick }) => {
 };
 
 const Feed = () => {
-  const [searchText, setSearchText] = useState("");
-  const [posts, setPosts] = useState([]);
+  const { searchText, setSearchText } = useSearch();
+  const { filteredPrompts, setFilteredPrompts } = useSearch();
+  const { posts, setPosts } = useSearch();
+
   const handleSearchChange = (e) => {
-    setSearchText(e.target.value);
+    const searchText = e.target.value;
+    setSearchText(searchText);
+
+    const someFilteredPosts = posts.filter((post) => {
+      const { tag, prompt, creator } = post;
+      const lowerSearchText = searchText.toLowerCase();
+
+      const tagMatch = tag.toLowerCase().includes(lowerSearchText);
+
+      const contentMatch = prompt.toLowerCase().includes(lowerSearchText);
+
+      const creatorMatch = creator.username
+        .toLowerCase()
+        .includes(lowerSearchText);
+      return tagMatch || contentMatch || creatorMatch;
+    });
+    console.log(someFilteredPosts);
+    setFilteredPrompts(someFilteredPosts);
   };
+
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch("/api/prompt");
+      const response = await fetch('/api/prompt');
       const data = await response.json();
       setPosts(data);
+      setFilteredPrompts(data);
+      setSearchText('');
     };
     fetchPosts();
   }, []);
@@ -44,7 +67,10 @@ const Feed = () => {
           className="search_input peer"
         />
       </form>
-      <PromptCardList data={posts} handleTagClick={() => {}} />
+      <PromptCardList
+        data={filteredPrompts}
+        handleTagClick={(tag) => setSearchText(tag)}
+      />
     </section>
   );
 };
