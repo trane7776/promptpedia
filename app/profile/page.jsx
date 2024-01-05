@@ -37,7 +37,7 @@ const MyProfile = () => {
 
   return (
     <Profile
-      name="Мой"
+      name="Мой профиль"
       desc="Добро пожаловать на страницу профиля. Здесь вы можете изменить свою информацию и управлять своими постами. "
       data={posts}
       handleEdit={handleEdit}

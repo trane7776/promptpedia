@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
   const [copied, setCopied] = useState('');
@@ -17,7 +18,10 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
   return (
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">
-        <div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
+        <Link
+          href={`/profile/${post.creator._id}`}
+          className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
+        >
           <Image
             src={post.creator.image}
             alt="user_image"
@@ -33,7 +37,7 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
               {post.creator.vkId}
             </p>
           </div>
-        </div>
+        </Link>
         <div className="copy_btn" onClick={handleCopy}>
           <Image
             src={
