@@ -5,6 +5,7 @@ import PromptCard from './PromptCard';
 import { useSearch } from '../context/SearchContext';
 
 const PromptCardList = ({ data, handleTagClick }) => {
+  console.log(data);
   return (
     <div className="mt-16 prompt_layout">
       {data.map((post) => (
@@ -24,8 +25,8 @@ const Feed = () => {
   const { posts, setPosts } = useSearch();
 
   const handleSearchChange = (e) => {
-    const searchText = e.target.value;
-    setSearchText(searchText);
+    const searchChangeText = e.target.value;
+    setSearchText(searchChangeText);
 
     const someFilteredPosts = posts.filter((post) => {
       const { tag, prompt, creator } = post;
